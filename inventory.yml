@@ -1,0 +1,29 @@
+---
+all:
+  children:
+    controllers:
+      hosts:
+        10.10.20.31:
+          hostname: rpi-cluster-01
+        10.10.20.32:
+          hostname: rpi-cluster-02
+        10.10.20.33:
+          hostname: rpi-cluster-03
+      vars:
+        bootstrap: 10.10.20.31
+    workers:
+      hosts:
+        10.10.20.34:
+          hostname: rpi-cluster-04
+        10.10.20.35:
+          hostname: rpi-cluster-05
+        10.10.20.36:
+          hostname: rpi-cluster-06
+        10.10.20.37:
+          hostname: rpi-cluster-07
+    cluster:
+      children:
+        controllers:
+        workers:
+  vars:
+    ansible_user: ubuntu
