@@ -24,4 +24,27 @@ ansible-playbook 02_update_hosts.yml
 ansible-playbook 03_update_kernel_cmdline.yml
 ansible-playbook 04_build_k3s_cluster.yml
 ansible-playbook 05_set_timezone.yml
+ansible-playbook 06_backup_etcd_snapshot.yml
+```
+
+## Common Commands
+
+Common commands have been added to the Makefile
+
+### Ping Hosts
+
+```bash
+make ping
+```
+
+### Patch Hosts
+
+```bash
+make update
+```
+
+### Backup Cluster State
+
+```bash
+make backup
 ```
