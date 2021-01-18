@@ -1,0 +1,36 @@
+---
+- hosts: controllers
+  gather_facts: no
+  become: yes
+  remote_user: ubuntu
+  tasks:
+    - name: Create local backup directory on localhost
+      file:
+        path: backup/etcd/{{ hostvars[inventory_hostname].hostname }}
+        state: directory
+      delegate_to: localhost
+
+    - name: Adjust permissions on local directory
+      file:
+        path: backup
+        state: directory
+        recurse: yes
+        owner: pi
+        group: pi
+        mode: '0770'
+      delegate_to: localhost
+
+    - name: Get a list of etcd snapshots
+      find:
+        paths: "/var/lib/rancher/k3s/server/db/snapshots/"
+      register: found_files
+
+    - name: Get latest snapshot from etcd
+      set_fact:
+        latest_file: "{{ found_files.files | sort(attribute='mtime',reverse=true) | first }}"
+
+    - name: Backup snapshot to localhost
+      ansible.builtin.fetch:
+        flat: yes
+        src: "{{ latest_file.path }}"
+        dest: "backup/etcd/{{ hostvars[inventory_hostname].hostname }}/"
