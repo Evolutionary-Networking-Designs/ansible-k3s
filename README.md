@@ -23,4 +23,5 @@ ansible-playbook 01_update_hostnames.yml
 ansible-playbook 02_update_hosts.yml
 ansible-playbook 03_update_kernel_cmdline.yml
 ansible-playbook 04_build_k3s_cluster.yml
+ansible-playbook 05_set_timezone.yml
 ```
