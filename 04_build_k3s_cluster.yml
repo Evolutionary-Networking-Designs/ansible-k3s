@@ -1,0 +1,10 @@
+---
+# https://github.com/PyratLabs/ansible-role-k3s/blob/main/documentation/quickstart-ha-cluster.md
+
+- name: Build a cluster with HA control plane
+  hosts: cluster
+  vars:
+    k3s_become_for_all: true
+    k3s_etcd_datastore: true
+  roles:
+    - xanmanning.k3s
