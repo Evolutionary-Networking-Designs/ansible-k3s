@@ -1,0 +1,10 @@
+---
+# https://github.com/PyratLabs/ansible-role-k3s/blob/main/documentation/quickstart-ha-cluster.md
+
+- name: Remove k3s from cluster nodes
+  hosts: cluster
+  vars:
+    k3s_become_for_all: true
+    k3s_state: uninstalled
+  roles:
+    - xanmanning.k3s
