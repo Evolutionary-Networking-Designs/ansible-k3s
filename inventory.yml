@@ -12,16 +12,16 @@ all:
         10.10.20.33:
           hostname: rpi-cluster-03
           k3s_control_node: true
+        10.10.20.34:
+          hostname: rpi-cluster-04
+          k3s_control_node: true
+        10.10.20.35:
+          hostname: rpi-cluster-05
+          k3s_control_node: true
       vars:
         bootstrap: 10.10.20.31
     workers:
       hosts:
-        10.10.20.34:
-          hostname: rpi-cluster-04
-          k3s_control_node: false
-        10.10.20.35:
-          hostname: rpi-cluster-05
-          k3s_control_node: false
         10.10.20.36:
           hostname: rpi-cluster-06
           k3s_control_node: false
