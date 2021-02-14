@@ -1,19 +1,22 @@
-# Install Pre-requisites
+# Install Rancher on a Kubernetes Cluster
+
+## Install Pre-requisites
 
 - https://github.com/helm/helm
 
-# Add the Helm Chart Repository
+## Add the Helm Chart Repository
 
 ```bash
 helm repo add rancher-stable https://releases.rancher.com/server-charts/stable
 ```
-# Create a Namespace for Rancher
+
+## Create a Namespace for Rancher
 
 ```bash
 kubectl create namespace cattle-system
 ```
 
-# Install cert-manager
+## Install cert-manager
 
 ```bash
 # Install the CustomResourceDefinition resources separately
@@ -51,7 +54,7 @@ Validate cert-manager is running
 kubectl get pods --namespace cert-manager
 ```
 
-# Install Rancher
+## Install Rancher
 
 ```bash
 export RANCHER.DNS=rancher.dev
@@ -73,12 +76,6 @@ Final command to verify deployment
 kubectl -n cattle-system get deploy rancher
 ```
 
-
-
-
-
-
-
-# Reference
+## Reference
 
 https://rancher.com/docs/rancher/v2.x/en/installation/
