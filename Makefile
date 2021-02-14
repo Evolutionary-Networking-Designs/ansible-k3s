@@ -7,4 +7,4 @@ install:
 uninstall:
 	ansible-playbook 00_uninstall_k3s_cluster.yml
 backup:
-	ansible-playbook 06_backup_etcd_snapshot.yml
+	ansible-playbook 99_backup_etcd_snapshot.yml
