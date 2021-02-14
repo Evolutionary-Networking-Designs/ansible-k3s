@@ -1,6 +1,10 @@
 ---
 all:
   children:
+    primary:
+      hosts:
+        10.10.20.31:
+          hostname: rpi-cluster-01
     controllers:
       hosts:
         10.10.20.31:
@@ -31,3 +35,5 @@ all:
         controllers:
   vars:
     ansible_user: ubuntu
+    k3s_endpoint: https://k3s.corp.meredithkm.info:6443
+    rancher_domain: https://k3s.corp.meredithkm.info

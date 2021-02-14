@@ -1,0 +1,78 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  become: no
+  remote_user: pi
+  tasks:
+
+    - name: Add Rancher Helm Chart Repository
+      community.kubernetes.helm_repository:
+        name: rancher-stable
+        repo_url: https://releases.rancher.com/server-charts/stable
+
+    - name: Create Rancher Namespace
+      community.kubernetes.k8s:
+        name: cattle-system
+        api_version: v1
+        kind: Namespace
+        state: present
+
+    - name: Check for cert-manager crd
+      shell: kubectl get crd | grep cert-manager | wc -l
+      register: cert_manager_crd
+      changed_when: false
+
+    - name: Install cert-manager crd
+      shell: kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v1.0.4/cert-manager.crds.yaml
+      when: cert_manager_crd == 0
+
+    - name: Create cert-manager Namespace
+      community.kubernetes.k8s:
+        name: cert-manager
+        api_version: v1
+        kind: Namespace
+        state: present
+
+    - name: Add cert-manager Helm Chart Repository
+      community.kubernetes.helm_repository:
+        name: jetstack
+        repo_url: https://charts.jetstack.io
+
+    - name: Install cert-manager
+      community.kubernetes.helm:
+        name: cert-manager
+        chart_ref: jetstack/cert-manager
+        chart_version: v1.0.4
+        release_namespace: cert-manager
+        update_repo_cache: yes
+
+    - name: Wait for cert-manager to be available.
+      community.kubernetes.k8s_info:
+        kind: Pod
+        wait: yes
+        name: pod-not-yet-created
+        namespace: cert-manager
+        wait_sleep: 10
+        wait_timeout: 360
+
+    - name: Install rancher
+      community.kubernetes.helm:
+        name: rancher
+        chart_ref: rancher-stable/rancher
+        release_namespace: cattle-system
+        update_repo_cache: yes
+        values:
+          hostname: '{{ rancher_domain }}'
+    
+    - name: Wait for rancher to be available
+      community.kubernetes.k8s_info:
+        kind: Pod
+        wait: yes
+        name: pod-not-yet-created
+        namespace: cattle-system
+        wait_sleep: 10
+        wait_timeout: 360
+
+      
+

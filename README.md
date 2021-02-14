@@ -4,10 +4,22 @@
 
 Ubuntu 20.04 LTS (arm64)
 
+## Required python packages
+
+```bash
+pip3 install openshift
+```
+
 ## This project uses the following role from Ansible Galaxy
 
 ```bash
 ansible-galaxy install xanmanning.k3s
+```
+
+## This project uses the following plugins from Ansible Galaxy
+
+```bash
+ansible-galaxy collection install community.kubernetes
 ```
 
 ## History
@@ -16,15 +28,30 @@ This project was built for a cluster of 7 Rasberry Pi Model 4B (8 GB Ram) nodes.
 
 ## Usage
 
-The playbooks should be run in the following order:
+### Configure Environment
+
+Run the configure playbooks to prepare for cluster deployment
 
 ```bash
-ansible-playbook 01_update_hostnames.yml
-ansible-playbook 02_update_hosts.yml
-ansible-playbook 03_update_kernel_cmdline.yml
-ansible-playbook 04_build_k3s_cluster.yml
-ansible-playbook 05_set_timezone.yml
-ansible-playbook 06_backup_etcd_snapshot.yml
+make configure
+```
+
+### Setup Cluster
+
+```bash
+make install
+```
+
+#### Check deployment of rancher
+
+```bash
+kubectl -n cattle-system rollout status deploy/rancher
+```
+
+### WARNING: The next command ERASES the cluster
+
+```bash
+make uninstall
 ```
 
 ## Common Commands
